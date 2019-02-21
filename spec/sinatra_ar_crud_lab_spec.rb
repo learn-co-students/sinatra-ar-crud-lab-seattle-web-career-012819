@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'pry'
 describe "Magazine App" do
   let(:article_title) { "Hello World" }
   let(:article_content) { "This is my first article!!!" }
@@ -13,12 +13,12 @@ describe "Magazine App" do
 
     it "creates a new article" do
       visit '/articles/new'
-
+      
       fill_in :title, :with => "my favorite article"
       fill_in :content, :with => "content!!!!"
-
+      
       page.find(:css, "[type=submit]").click
-
+      
       expect(Article.all.count).to eq(3)
       expect(Article.last.title).to eq("my favorite article")
     end
@@ -28,8 +28,8 @@ describe "Magazine App" do
 
       fill_in :title, :with => "an article"
       fill_in :content, :with => "content content content content content"
-
       page.find(:css, "[type=submit]").click
+      # binding.pry
 
       expect(page.current_path).to eq("/articles/#{Article.last.id}")
       expect(page.body).to include("content content content content content")
@@ -93,6 +93,7 @@ describe "Magazine App" do
       fill_in :content, :with => "this is the best article ever written"
 
       page.find(:css, "[type=submit]").click
+      # binding.pry
       expect(Article.all.count).to eq(2)
       expect(Article.last.title).to eq("Second Article!!")
     end
@@ -122,6 +123,7 @@ describe "Magazine App" do
 
     it "deletes an article from the database" do
       visit "/articles/#{@article2.id}"
+      # binding.pry
       page.find(:css, "form [type=submit]").click
       expect(Article.all.count).to eq(1)
       expect(Article.last.title).to eq("Hello World")
